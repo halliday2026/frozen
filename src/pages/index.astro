@@ -13,7 +13,7 @@ import { en, es } from "../content/content";
   <main>
     <nav class="nav-grid" aria-label="Resource topics">
       {en.navButtons.map((btn, i) => (
-        <a href={`/${btn.slug}/`} class="nav-btn">
+        <a href={`${import.meta.env.BASE_URL}${btn.slug}/`} class="nav-btn">
           <span class="num" aria-hidden="true">{i + 1}</span>
           <span>
             <span class="lang-en">{btn.label}</span>
