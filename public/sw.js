@@ -1,13 +1,14 @@
 const CACHE_NAME = "ice-guide-v1";
+const BASE = "/frozen";
 const URLS_TO_CACHE = [
-  "/",
-  "/confronted/",
-  "/at-home/",
-  "/public-work/",
-  "/detained/",
-  "/family-steps/",
-  "/deportation/",
-  "/preparation/",
+  BASE + "/",
+  BASE + "/confronted/",
+  BASE + "/at-home/",
+  BASE + "/public-work/",
+  BASE + "/detained/",
+  BASE + "/family-steps/",
+  BASE + "/deportation/",
+  BASE + "/preparation/",
 ];
 
 self.addEventListener("install", (event) => {
