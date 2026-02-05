@@ -1,0 +1,22 @@
+{
+  "name": "ICE Encounter Resource Guide",
+  "short_name": "ICE Guide",
+  "description": "Know your rights during ICE encounters. For emergency readiness and education purposes only.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f8fa",
+  "theme_color": "#1a365d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}

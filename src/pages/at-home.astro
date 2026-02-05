@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Disclaimer from "../components/Disclaimer.astro";
+import ContentPage from "../components/ContentPage.astro";
+import ActionBar from "../components/ActionBar.astro";
+import { en, es } from "../content/content";
+
+const slug = "at-home";
+---
+
+<Layout title={en.pages[slug].title}>
+  <Header showBack titleEn={en.pages[slug].title} titleEs={es.pages[slug].title} />
+  <Disclaimer />
+  <main>
+    <ContentPage slug={slug} />
+    <ActionBar />
+  </main>
+</Layout>

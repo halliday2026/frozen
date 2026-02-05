@@ -1,0 +1,26 @@
+---
+import { en, es } from "../content/content";
+import type { PageContent } from "../content/content";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const enPage = en.pages[slug];
+const esPage = es.pages[slug];
+---
+
+<h2 class="page-title">
+  <span class="lang-en">{enPage.title}</span>
+  <span class="lang-es">{esPage.title}</span>
+</h2>
+
+<ul class="content-list" role="list">
+  {enPage.items.map((item, i) => (
+    <li class="content-item">
+      <span class="lang-en">{item}</span>
+      <span class="lang-es">{esPage.items[i]}</span>
+    </li>
+  ))}
+</ul>

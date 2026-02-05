@@ -1,0 +1,33 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Disclaimer from "../components/Disclaimer.astro";
+import EmergencyContacts from "../components/EmergencyContacts.astro";
+import { en, es } from "../content/content";
+---
+
+<Layout title="ICE Encounter Resource Guide">
+  <Header titleEn={en.siteTitle} titleEs={es.siteTitle} />
+  <Disclaimer />
+
+  <main>
+    <nav class="nav-grid" aria-label="Resource topics">
+      {en.navButtons.map((btn, i) => (
+        <a href={`/${btn.slug}/`} class="nav-btn">
+          <span class="num" aria-hidden="true">{i + 1}</span>
+          <span>
+            <span class="lang-en">{btn.label}</span>
+            <span class="lang-es">{es.navButtons[i].label}</span>
+          </span>
+        </a>
+      ))}
+    </nav>
+
+    <EmergencyContacts />
+  </main>
+
+  <footer class="footer">
+    <p class="lang-en">This resource is for educational purposes only and does not constitute legal advice.</p>
+    <p class="lang-es">Este recurso es solo para fines educativos y no constituye asesoramiento legal.</p>
+  </footer>
+</Layout>

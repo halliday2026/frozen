@@ -1,0 +1,57 @@
+---
+interface Props {
+  showBack?: boolean;
+  titleEn: string;
+  titleEs: string;
+}
+
+const { showBack = false, titleEn, titleEs } = Astro.props;
+---
+
+<header class="header" role="banner">
+  <div class="header-inner">
+    {showBack && (
+      <a href="/" class="back-link" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        <span class="lang-en">Home</span>
+        <span class="lang-es">Inicio</span>
+      </a>
+    )}
+    <h1 class="header-title">
+      <span class="lang-en">{titleEn}</span>
+      <span class="lang-es">{titleEs}</span>
+    </h1>
+    <div class="lang-toggle" role="group" aria-label="Language selection">
+      <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+      <button class="lang-btn" data-lang="es" aria-label="Espa&ntilde;ol">ES</button>
+    </div>
+  </div>
+</header>
+
+<script>
+  function initLangToggle() {
+    const currentLang = localStorage.getItem("lang") || "en";
+    const buttons = document.querySelectorAll<HTMLButtonElement>(".lang-btn");
+
+    function setLang(lang: string) {
+      localStorage.setItem("lang", lang);
+      document.documentElement.lang = lang;
+      document.body.setAttribute("data-lang", lang);
+      buttons.forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.lang === lang);
+      });
+    }
+
+    setLang(currentLang);
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const lang = btn.dataset.lang!;
+        setLang(lang);
+      });
+    });
+  }
+
+  initLangToggle();
+  document.addEventListener("astro:after-swap", initLangToggle);
+</script>

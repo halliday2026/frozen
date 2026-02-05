@@ -1,0 +1,112 @@
+---
+import { en, es } from "../content/content";
+---
+
+<div class="emergency-contacts container">
+  <h3>
+    <span class="lang-en">{en.emergencyContactTitle}</span>
+    <span class="lang-es">{es.emergencyContactTitle}</span>
+  </h3>
+  <div class="contact-row">
+    <input
+      type="text"
+      id="contact-name"
+      autocomplete="off"
+    />
+    <input
+      type="tel"
+      id="contact-phone"
+      autocomplete="off"
+    />
+  </div>
+  <div class="contact-row">
+    <input
+      type="text"
+      id="contact-name-2"
+      autocomplete="off"
+    />
+    <input
+      type="tel"
+      id="contact-phone-2"
+      autocomplete="off"
+    />
+  </div>
+  <div class="contact-actions">
+    <button class="btn-save" id="save-contacts">
+      <span class="lang-en">{en.emergencyContactSave}</span>
+      <span class="lang-es">{es.emergencyContactSave}</span>
+    </button>
+    <button class="btn-clear" id="clear-contacts">
+      <span class="lang-en">{en.emergencyContactClear}</span>
+      <span class="lang-es">{es.emergencyContactClear}</span>
+    </button>
+    <span class="save-feedback" id="save-feedback">
+      <span class="lang-en">{en.emergencyContactSaved}</span>
+      <span class="lang-es">{es.emergencyContactSaved}</span>
+    </span>
+  </div>
+</div>
+
+<script>
+  function initContacts() {
+    const nameEl = document.getElementById("contact-name") as HTMLInputElement;
+    const phoneEl = document.getElementById("contact-phone") as HTMLInputElement;
+    const name2El = document.getElementById("contact-name-2") as HTMLInputElement;
+    const phone2El = document.getElementById("contact-phone-2") as HTMLInputElement;
+    const saveBtn = document.getElementById("save-contacts");
+    const clearBtn = document.getElementById("clear-contacts");
+    const feedback = document.getElementById("save-feedback");
+
+    function setPlaceholders() {
+      const lang = localStorage.getItem("lang") || "en";
+      const pName = lang === "es" ? "Nombre" : "Name";
+      const pPhone = lang === "es" ? "N\u00famero de tel\u00e9fono" : "Phone number";
+      if (nameEl) nameEl.placeholder = pName + " 1";
+      if (phoneEl) phoneEl.placeholder = pPhone + " 1";
+      if (name2El) name2El.placeholder = pName + " 2";
+      if (phone2El) phone2El.placeholder = pPhone + " 2";
+    }
+
+    // Load saved contacts
+    try {
+      const saved = JSON.parse(localStorage.getItem("emergencyContacts") || "{}");
+      if (nameEl && saved.name) nameEl.value = saved.name;
+      if (phoneEl && saved.phone) phoneEl.value = saved.phone;
+      if (name2El && saved.name2) name2El.value = saved.name2;
+      if (phone2El && saved.phone2) phone2El.value = saved.phone2;
+    } catch {
+      // ignore
+    }
+
+    setPlaceholders();
+
+    // Update placeholders when language changes
+    const observer = new MutationObserver(setPlaceholders);
+    observer.observe(document.body, { attributes: true, attributeFilter: ["data-lang"] });
+
+    saveBtn?.addEventListener("click", () => {
+      const data = {
+        name: nameEl?.value || "",
+        phone: phoneEl?.value || "",
+        name2: name2El?.value || "",
+        phone2: phone2El?.value || "",
+      };
+      localStorage.setItem("emergencyContacts", JSON.stringify(data));
+      if (feedback) {
+        feedback.classList.add("visible");
+        setTimeout(() => feedback.classList.remove("visible"), 2000);
+      }
+    });
+
+    clearBtn?.addEventListener("click", () => {
+      localStorage.removeItem("emergencyContacts");
+      if (nameEl) nameEl.value = "";
+      if (phoneEl) phoneEl.value = "";
+      if (name2El) name2El.value = "";
+      if (phone2El) phone2El.value = "";
+    });
+  }
+
+  initContacts();
+  document.addEventListener("astro:after-swap", initContacts);
+</script>

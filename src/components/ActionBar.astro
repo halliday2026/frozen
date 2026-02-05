@@ -1,0 +1,50 @@
+---
+import { en, es } from "../content/content";
+---
+
+<div class="action-bar">
+  <button class="action-btn" id="share-btn" aria-label="Share this page">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+    <span class="lang-en">{en.shareLabel}</span>
+    <span class="lang-es">{es.shareLabel}</span>
+  </button>
+  <button class="action-btn" id="print-btn" aria-label="Print this page">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    <span class="lang-en">{en.printLabel}</span>
+    <span class="lang-es">{es.printLabel}</span>
+  </button>
+</div>
+
+<script>
+  function initActions() {
+    const shareBtn = document.getElementById("share-btn");
+    const printBtn = document.getElementById("print-btn");
+
+    shareBtn?.addEventListener("click", async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: document.title,
+            url: window.location.href,
+          });
+        } catch {
+          // User cancelled or share failed
+        }
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        shareBtn.textContent = "Copied!";
+        setTimeout(() => {
+          const lang = localStorage.getItem("lang") || "en";
+          shareBtn.textContent = lang === "es" ? "Compartir" : "Share";
+        }, 1500);
+      }
+    });
+
+    printBtn?.addEventListener("click", () => {
+      window.print();
+    });
+  }
+
+  initActions();
+  document.addEventListener("astro:after-swap", initActions);
+</script>
